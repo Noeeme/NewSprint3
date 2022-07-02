@@ -3,20 +3,15 @@ info:
   title: Cidade
   description: API para 
   version: 0.0.1
-  contact:
-    nome: Noeeme
-    email: noeeme.silva.pb@compasso.com.br
-    url: 
-servers:
-  url: http://localhost:8080/h2/login.do?jsessionid=fb503e2df4848405da5c2e2e6afef064
-  description: Sprint API
+
+host: ""
 paths:
   /api/states:
     get:
-      summary: Seleciona todas as cidades cadastradas
+      summary: Seleciona todas as cidades cadastradas.
       responses:
         200:
-          description: Sucesso
+          description: Ok
           content:
             application/json:
               schema:
@@ -31,26 +26,55 @@ paths:
            content:
             application/json:
               example: "Not Found"
+    post:
+      summary: Cadastra uma nova cidade.
+
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            example:
+              nome: Pernambuco
+              regiao: Nordeste
+              populacao: 92780000000
+              capital: recife
+              area: 98312
   /api/states/{id}:
   get:
-      summary: Filtra cidades pelo id, ou por regiao, ou por area.
+      summary: Filtra cidades pela regiao, por area, ou por população.
+      description:
+        É necessário a declaração do número da página que será acessada,
+        juntamente com a quantidade de cidades que deverão aparecer por página.
+        Para ordenação de itens, o nome do parâmetro, pelo qual se quer ordenar, 
+        deve ser chamado.
+      parameters:
+        - name: pag
+          in: path
+          description: número da pagina
+          type: integer
+          required: true
+        - name: qtd
+          in: path
+          description: Quantidade de itens que deverão aparecer por página
+          type: integer
+          required: true
+        - name: ordenacao
+          in: path
+          description: nome do parâmetro a ser utilizado para ordenar
+          type: String
+          required: false
       responses:
         200:
-          description: Sucesso
+          description: Ok
           content:
             application/json:
               schema:
                 type: object
-                properties:
-                  id:
-                    type: integer
-                  descricao:
-                    type: string
-        400:
-          description: Cidade não encontrada
-           content:
-            application/json:
-              example: "Not Found"
     put:
       summary: Atualização de uma cidade
       responses: 
